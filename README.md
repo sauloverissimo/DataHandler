@@ -3,7 +3,8 @@
 
 **Advanced Data Handling Library for Arduino**  
 
-A library for handling **variants, vectors, tables, and dataframes** efficiently in Arduino projects. Enables structured data processing, transformation, and management.  
+A library for handling **variants, vectors, tables, and dataframes** efficiently in Arduino projects.
+Enables structured data processing, transformation, and management.  
 
 ---
 
