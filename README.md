@@ -1,4 +1,3 @@
-```markdown
 # DataHandler 📊📂  
 
 **Advanced Data Handling Library for Arduino**  
@@ -174,5 +173,3 @@ For a detailed breakdown of the API, visit:
 If you have any issues or suggestions, feel free to open an **Issue** or a **Pull Request** on GitHub.  
 
 Happy Coding! 🚀📊
-```
-
