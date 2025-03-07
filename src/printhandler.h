@@ -89,6 +89,16 @@ inline void println(const Vector& vec) {
     Serial.println();
 }
 
+
+inline void print(const std::vector<std::string>& vec) {
+    Serial.print("[ ");
+    for (size_t i = 0; i < vec.size(); i++) {
+        Serial.print(vec[i].c_str());
+        if (i < vec.size() - 1) Serial.print(", ");
+    }
+    Serial.println(" ]");
+}
+
 // // ------------------- IMPRESSÃO DE TABLE -------------------
 
 // 🔹 Imprime uma tabela (TypeTable)
