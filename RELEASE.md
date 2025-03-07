@@ -1,212 +1,173 @@
 ```markdown
-# 🚀 ESP32_Host_MIDI - Release 2.0 🎹📡
+# DataHandler 📊📂  
 
-Welcome to version **2.0** of the **ESP32_Host_MIDI** library! This update brings significant improvements over the previous version, including performance optimizations, new features, and enhanced stability for MIDI communication via **USB and BLE** on the **ESP32-S3** with **T-Display S3**.
+**Advanced Data Handling Library for Arduino**  
 
----
-
-## 🔥 Key Updates and Improvements
-
-### 🏗️ Enhanced Modular Architecture
-- Improved code structure for easier maintenance and expansion.
-- Clear separation between **USB MIDI**, **BLE MIDI**, **Display Output**, and **MIDI Processing** modules.
-
-### 🎛️ New MIDI Processing Queue
-- The **MIDI_Handler** now uses a **dynamic queue** (`std::deque<MIDIEventData>`) to store MIDI events, providing more flexibility and better control over data flow.
-- Added an **adjustable event limit** to prevent overloading.
-
-### 📡 Improved USB MIDI Host
-- **Reworked USB MIDI packet processing** ensures that only the **first 4 relevant bytes** are used, reducing latency.
-- Optimized **USB message queue**, increasing efficiency in handling received MIDI packets.
-- **New callback system** for USB MIDI device connection and disconnection events.
-
-### 📲 Enhanced BLE MIDI Support
-- The **ESP32 now functions as a stable and reliable BLE MIDI server**.
-- **Direct callback for processing received BLE MIDI messages**.
-- Optimized BLE advertising for better compatibility with mobile MIDI apps.
-
-### 🎨 Improved MIDI Display Output
-- Uses **LovyanGFX** for optimized rendering on the **ST7789**.
-- New `printMessage()` method in **ST7789_Handler**:
-  - Displays **multi-line messages**.
-  - **Automatically highlights** the last line for better separation of MIDI events.
-  - Reduces flickering by avoiding unnecessary screen refreshes.
-
-### 🏎️ Performance Boost
-- **Better use of USB interrupts**, reducing the load on the main loop.
-- **Removal of unnecessary delays**, improving real-time MIDI event processing.
-- **Optimized chord and sequence detection**.
+A library for handling **variants, vectors, tables, and dataframes** efficiently in Arduino projects. Enables structured data processing, transformation, and management.  
 
 ---
 
-## 📂 Code Structure in Version 2.0
+## English 🇺🇸 🏈  
 
-The new file structure is designed for modularity and clarity:
+### Overview  
+The **DataHandler** library provides a structured approach to handling **tables**, **vectors**, and **variants** in Arduino projects. It enables **storing, manipulating, and querying** data using a flexible and modular approach.  
 
-📁 **/src/**
-- `USB_Conexion.h / USB_Conexion.cpp` → Manages USB MIDI communication.
-- `BLE_Conexion.h / BLE_Conexion.cpp` → Manages BLE MIDI communication.
-- `MIDI_Handler.h / MIDI_Handler.cpp` → Interprets and organizes MIDI events.
-- `ESP32_Pin_Config.h` → Defines ESP32 pin configurations.
+This library is designed to **simplify** working with structured data and make Arduino-based applications more powerful, especially when handling tabular data like notes, scales, chords, and sequences.  
 
-📁 **/examples/**
-- Complete example for **T-Display S3**, showcasing **MIDI USB + BLE + Display** integration.
+### File Structure  
+
+- **datahandler.h / datahandler.cpp**  
+  Core library files defining **Table**, **Vector**, and **Element** structures.  
+  - **Key Features:**  
+    - Dynamic **tables** with column-based indexing.  
+    - **Vectors** for row-based operations.  
+    - **Variants** for storing multiple data types (integers, floats, strings, vectors).  
+    - Utility functions for **data transformation**, **spinning**, and **row/column manipulation**.  
+
+- **examples/**  
+  Includes multiple examples demonstrating how to **create, manipulate, and query** structured data.  
+  - Example 1: **Basic table creation and row/column access**.  
+  - Example 2: **Using tables with different data types**.  
+  - Example 3: **Data transformations (spread, spin, and rotation functions)**.  
 
 ---
 
-## ⚡ How to Upgrade to Version 2.0?
+## Data Structures  
 
-1. **Download the updated library files** and replace the old ones.
-2. **Check your code**:
-   - If you were using `onMidiMessage()` directly, now you should override `onMidiDataReceived()` in **USB_Conexion** or **BLE_Conexion**.
-   - To display MIDI messages on **ST7789**, use `printMessage()` in **ST7789_Handler**.
+### 🔹 **Element**  
+Represents a single data item that can be:  
+✅ **Integer** (`int`)  
+✅ **Float** (`float`)  
+✅ **String** (`std::string`)  
+✅ **Vector of Strings** (`std::vector<std::string>`)  
 
----
-
-## 🛠️ How to Use the New Version?
-
-### 1️⃣ Initialize USB MIDI Communication:
+Example:  
 ```cpp
-USB_Conexion usbMIDI;
-usbMIDI.begin();
+Element e1 = 42;  
+Element e2 = "Hello";  
+Element e3 = std::vector<std::string>{"A", "B", "C"};  
 ```
 
-### 2️⃣ Initialize BLE MIDI Communication:
+### 🔹 **Vector**  
+A one-dimensional structure representing a **row** in a table.  
+Example:  
 ```cpp
-BLE_Conexion bleMIDI;
-bleMIDI.begin();
+Vector row({"Alice", 25, "New York"});  
+Serial.println(row[0]);  // Output: Alice  
 ```
 
-### 3️⃣ Process MIDI in the Main Loop:
+### 🔹 **Table**  
+A two-dimensional structure representing **structured data** with named columns.  
+Example:  
 ```cpp
-void loop() {
-    usbMIDI.task();
-    bleMIDI.task();
+Table myTable({}, {"Name", "Age", "City"});  
+myTable.addRow({"Bob", 30, "Los Angeles"});  
+```
+
+---
+
+## 📌 Key Functions  
+
+### **1️⃣ Accessing Rows and Columns**  
+
+- **Get row by index**  
+  ```cpp
+  Vector row = myTable.row(0);  
+  Serial.println(row[1]);  // Prints "30"
+  ```
+  
+- **Get column by name**  
+  ```cpp
+  Vector ages = myTable.column("Age");  
+  Serial.println(ages[0]);  // Prints "30"
+  ```
+
+### **2️⃣ Transforming Data**  
+
+- **Spin a Vector**  
+  ```cpp
+  TypeVector myVec = {"A", "B", "C", "D"};  
+  TypeVector rotated = spin(myVec, 1);  
+  // Output: ["B", "C", "D", "A"]
+  ```
+
+- **Repeat Array into a Table**  
+  ```cpp
+  TypeTable repeated = repeatarray(myVec);  
+  ```
+
+### **3️⃣ Querying Data**  
+
+- **Find row by value in a specific column**  
+  ```cpp
+  Vector foundRow = myTable.row("Bob", "Name");  
+  Serial.println(foundRow[2]);  // Output: "Los Angeles"
+  ```
+
+---
+
+## Example Usage  
+
+### **Example 1: Creating a Table and Accessing Data**  
+
+```cpp
+#include <datahandler.h>
+
+void setup() {
+    Serial.begin(115200);
+    Serial.println("\n🔹 DataHandler Library Initialized");
+
+    // Create a table with column names
+    Table people({}, {"Name", "Age", "City"});
+
+    // Add rows of data
+    people.addRow({"Alice", 25, "New York"});
+    people.addRow({"Bob", 30, "Los Angeles"});
+
+    // Access and print data
+    Serial.println(people.row(1)["City"]);  // Output: Los Angeles
 }
-```
 
-### 4️⃣ Display MIDI Messages on the Screen:
-```cpp
-ST7789_Handler display;
-display.init();
-display.printMessage("MIDI Active!", 0, 0);
+void loop() {}
 ```
 
 ---
 
-## 🏆 Conclusion
+## 🔄 How It Works  
 
-This update **significantly improves the stability, efficiency, and functionality of ESP32_Host_MIDI**. If you were using the previous version, we highly recommend upgrading to take full advantage of all the new features and optimizations!
+1. **Table Creation**  
+   - Define column names and structure.  
+   - Add rows dynamically.  
 
-Thanks to the community for the feedback and suggestions! 🎶💙
+2. **Data Access**  
+   - Query rows by index or by column name.  
+   - Retrieve columns as vectors for easy data manipulation.  
 
----
-📌 **ESP32_Host_MIDI 2.0 - Faster, More Stable, More Complete!** 🚀🎵
-
-
-```markdown
-# 🚀 ESP32_Host_MIDI - Versão 2.0 🎹📡
-
-Bem-vindo à versão **2.0** da biblioteca **ESP32_Host_MIDI**! Esta atualização traz melhorias significativas em relação à versão anterior, incluindo otimizações de desempenho, novos recursos e maior estabilidade para comunicação MIDI via **USB e BLE** no **ESP32-S3** com **T-Display S3**.
-
----
-
-## 🔥 Principais Atualizações e Melhorias
-
-### 🏗️ Arquitetura Modular Aprimorada
-- Estrutura de código melhorada para facilitar a manutenção e expansão.
-- Separação clara entre os módulos de **USB MIDI**, **BLE MIDI**, **Saída no Display** e **Processamento MIDI**.
-
-### 🎛️ Nova Fila de Processamento MIDI
-- O **MIDI_Handler** agora usa uma **fila dinâmica** (`std::deque<MIDIEventData>`) para armazenar eventos MIDI, proporcionando mais flexibilidade e melhor controle sobre o fluxo de dados.
-- Adicionado um **limite ajustável de eventos** para evitar sobrecarga.
-
-### 📡 Melhorias no Host USB MIDI
-- **Reformulação do processamento de pacotes USB MIDI**, garantindo que apenas os **4 primeiros bytes relevantes** sejam utilizados, reduzindo a latência.
-- Otimização da **fila de mensagens USB**, aumentando a eficiência no tratamento dos pacotes MIDI recebidos.
-- **Novo sistema de callbacks** para eventos de conexão e desconexão de dispositivos MIDI USB.
-
-### 📲 Suporte Aprimorado para BLE MIDI
-- O **ESP32 agora funciona como um servidor MIDI BLE mais estável e confiável**.
-- **Callback direto para processar mensagens MIDI recebidas via BLE**.
-- Publicidade BLE otimizada para maior compatibilidade com aplicativos MIDI móveis.
-
-### 🎨 Melhorias na Exibição MIDI no Display
-- Utiliza **LovyanGFX** para otimização da renderização no **ST7789**.
-- Novo método `printMessage()` no **ST7789_Handler**:
-  - Exibe **mensagens em várias linhas**.
-  - **Destaque automático** para a última linha, melhorando a separação dos eventos MIDI.
-  - Redução de flickering ao evitar atualizações desnecessárias da tela.
-
-### 🏎️ Aumento de Desempenho
-- **Melhor uso de interrupções USB**, reduzindo a carga no loop principal.
-- **Remoção de delays desnecessários**, melhorando o processamento em tempo real dos eventos MIDI.
-- **Otimização na detecção de acordes e sequências de notas**.
+3. **Transformation Functions**  
+   - **Spin**: Rotates a vector cyclically.  
+   - **Spread**: Expands data for structured processing.  
+   - **RepeatArray**: Creates repeated structured data.  
 
 ---
 
-## 📂 Estrutura do Código na Versão 2.0
+## 📖 Supported Platforms  
 
-A nova estrutura de arquivos foi projetada para modularidade e clareza:
-
-📁 **/src/**
-- `USB_Conexion.h / USB_Conexion.cpp` → Gerencia a comunicação USB MIDI.
-- `BLE_Conexion.h / BLE_Conexion.cpp` → Gerencia a comunicação BLE MIDI.
-- `MIDI_Handler.h / MIDI_Handler.cpp` → Interpreta e organiza eventos MIDI.
-- `ESP32_Pin_Config.h` → Define as configurações de pinos do ESP32.
-
-📁 **/examples/**
-- Exemplo completo para **T-Display S3**, demonstrando a integração **MIDI USB + BLE + Display**.
+| Platform | Supported |
+|----------|-----------|
+| Arduino Uno | ❌ (Limited memory) |
+| ESP32 | ✅ Fully Supported |
+| ESP8266 | ✅ Fully Supported |
+| STM32 | ✅ Fully Supported |
 
 ---
 
-## ⚡ Como Atualizar para a Versão 2.0?
+## 📖 Documentation  
 
-1. **Baixe os arquivos atualizados da biblioteca** e substitua os arquivos antigos.
-2. **Verifique seu código**:
-   - Se você estava usando `onMidiMessage()` diretamente, agora deve sobrescrever `onMidiDataReceived()` em **USB_Conexion** ou **BLE_Conexion**.
-   - Para exibir mensagens MIDI no **ST7789**, use `printMessage()` no **ST7789_Handler**.
+For a detailed breakdown of the API, visit:  
+📌 **[GitHub Repository](https://github.com/meuusuario/datahandler)**  
 
----
+If you have any issues or suggestions, feel free to open an **Issue** or a **Pull Request** on GitHub.  
 
-## 🛠️ Como Usar a Nova Versão?
-
-### 1️⃣ Inicializar Comunicação USB MIDI:
-```cpp
-USB_Conexion usbMIDI;
-usbMIDI.begin();
-```
-
-### 2️⃣ Inicializar Comunicação BLE MIDI:
-```cpp
-BLE_Conexion bleMIDI;
-bleMIDI.begin();
-```
-
-### 3️⃣ Processar MIDI no Loop Principal:
-```cpp
-void loop() {
-    usbMIDI.task();
-    bleMIDI.task();
-}
-```
-
-### 4️⃣ Exibir Mensagens MIDI na Tela:
-```cpp
-ST7789_Handler display;
-display.init();
-display.printMessage("MIDI Ativo!", 0, 0);
-```
-
----
-
-## 🏆 Conclusão
-
-Esta atualização **melhora significativamente a estabilidade, eficiência e funcionalidade do ESP32_Host_MIDI**. Se você estava usando a versão anterior, recomendamos fortemente a atualização para aproveitar todos os novos recursos e otimizações!
-
-Agradecemos à comunidade pelo feedback e sugestões! 🎶💙
-
----
-📌 **ESP32_Host_MIDI 2.0 - Mais Rápido, Mais Estável, Mais Completo!** 🚀🎵
+Happy Coding! 🚀📊
 ```
 
