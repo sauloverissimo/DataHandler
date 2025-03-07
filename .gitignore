@@ -1,32 +1,41 @@
-# Prerequisites
-*.d
+# Arduino Library .gitignore
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Mac OS / Windows junk
+.DS_Store
+Thumbs.db
 
-# Precompiled Headers
-*.gch
-*.pch
+# SRC
+src.ino
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Logs and databases
+*.log
+*.sqlite
 
-# Fortran module files
-*.mod
-*.smod
+# Build folders
+.build/
+.pioenvs/
+.piolibdeps/
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Arduino generated files
+*.hex
+*.elf
+*.bin
 
-# Executables
-*.exe
-*.out
-*.app
+# Arduino IDE config files
+*.sln
+*.vcxproj*
+*.classpath
+*.project
+*.settings/
+
+# Library output
+/extras/
+
+# If using Visual Studio Code
+.vscode/
+
+# If using CLion/JetBrains IDE
+.idea/
+cmake-build-*/
+
+# End of .gitignore

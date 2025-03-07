@@ -1,173 +1,42 @@
-```markdown
-# DataHandler 📊📂  
+# DataHandler Release Notes
 
-**Advanced Data Handling Library for Arduino**  
+## Version 1.0.1
 
-A library for handling **variants, vectors, tables, and dataframes** efficiently in Arduino projects. Enables structured data processing, transformation, and management.  
+### Date: 2025-03-06
 
----
+**Overview / Visão Geral**
+- Minor enhancements and fixes across DataHandler structures.
+- Improved documentation for usage on ESP32.
 
-## English 🇺🇸 🏈  
+### Changes / Alterações
+1. **Table Column Indexing**
+   - Corrected an issue where `columnIndex` was not updated when columns were appended.
+2. **Element Constructors**
+   - Added better error handling for invalid vector indexing in `Element::operator[]`.
+3. **Spin Function**
+   - Now handles empty vectors gracefully, returning an empty table instead of producing an error.
+4. **PrintHandler Integration**
+   - Enhanced compatibility with `printhandler.h`, ensuring seamless printing of `Vector` and `Table`.
 
-### Overview  
-The **DataHandler** library provides a structured approach to handling **tables**, **vectors**, and **variants** in Arduino projects. It enables **storing, manipulating, and querying** data using a flexible and modular approach.  
+### New Features / Novos Recursos
+- **GrauDoGrau**: Extended the function to handle negative intervals.
+- **Spread Overload**: Overload that duplicates multiple subsets of a `TypeVector`.
 
-This library is designed to **simplify** working with structured data and make Arduino-based applications more powerful, especially when handling tabular data like notes, scales, chords, and sequences.  
+### Bug Fixes / Correções
+- Fixed a corner case in `rotate()` when `elem` is not found in the vector.
+- Resolved an occasional crash when `rowNameToIndex` was empty.
 
-### File Structure  
+### Migration / Migração
+- No breaking changes introduced.
+- Simply replace the old `datahandler.h/.cpp` with the new files.
+- If using `printhandler.h`, ensure you update it as well.
 
-- **datahandler.h / datahandler.cpp**  
-  Core library files defining **Table**, **Vector**, and **Element** structures.  
-  - **Key Features:**  
-    - Dynamic **tables** with column-based indexing.  
-    - **Vectors** for row-based operations.  
-    - **Variants** for storing multiple data types (integers, floats, strings, vectors).  
-    - Utility functions for **data transformation**, **spinning**, and **row/column manipulation**.  
+### Known Issues / Problemas Conhecidos
+- Intermittent memory usage spikes on lower-memory boards (e.g., Arduino Uno) when using large `TypeCube` objects.
+- Ongoing improvement in progress.
 
-- **examples/**  
-  Includes multiple examples demonstrating how to **create, manipulate, and query** structured data.  
-  - Example 1: **Basic table creation and row/column access**.  
-  - Example 2: **Using tables with different data types**.  
-  - Example 3: **Data transformations (spread, spin, and rotation functions)**.  
+### Acknowledgments / Agradecimentos
+- Thank you to the community for feedback and testing!
+- Obrigado à comunidade pelo feedback e testes!
 
----
-
-## Data Structures  
-
-### 🔹 **Element**  
-Represents a single data item that can be:  
-✅ **Integer** (`int`)  
-✅ **Float** (`float`)  
-✅ **String** (`std::string`)  
-✅ **Vector of Strings** (`std::vector<std::string>`)  
-
-Example:  
-```cpp
-Element e1 = 42;  
-Element e2 = "Hello";  
-Element e3 = std::vector<std::string>{"A", "B", "C"};  
-```
-
-### 🔹 **Vector**  
-A one-dimensional structure representing a **row** in a table.  
-Example:  
-```cpp
-Vector row({"Alice", 25, "New York"});  
-Serial.println(row[0]);  // Output: Alice  
-```
-
-### 🔹 **Table**  
-A two-dimensional structure representing **structured data** with named columns.  
-Example:  
-```cpp
-Table myTable({}, {"Name", "Age", "City"});  
-myTable.addRow({"Bob", 30, "Los Angeles"});  
-```
-
----
-
-## 📌 Key Functions  
-
-### **1️⃣ Accessing Rows and Columns**  
-
-- **Get row by index**  
-  ```cpp
-  Vector row = myTable.row(0);  
-  Serial.println(row[1]);  // Prints "30"
-  ```
-  
-- **Get column by name**  
-  ```cpp
-  Vector ages = myTable.column("Age");  
-  Serial.println(ages[0]);  // Prints "30"
-  ```
-
-### **2️⃣ Transforming Data**  
-
-- **Spin a Vector**  
-  ```cpp
-  TypeVector myVec = {"A", "B", "C", "D"};  
-  TypeVector rotated = spin(myVec, 1);  
-  // Output: ["B", "C", "D", "A"]
-  ```
-
-- **Repeat Array into a Table**  
-  ```cpp
-  TypeTable repeated = repeatarray(myVec);  
-  ```
-
-### **3️⃣ Querying Data**  
-
-- **Find row by value in a specific column**  
-  ```cpp
-  Vector foundRow = myTable.row("Bob", "Name");  
-  Serial.println(foundRow[2]);  // Output: "Los Angeles"
-  ```
-
----
-
-## Example Usage  
-
-### **Example 1: Creating a Table and Accessing Data**  
-
-```cpp
-#include <datahandler.h>
-
-void setup() {
-    Serial.begin(115200);
-    Serial.println("\n🔹 DataHandler Library Initialized");
-
-    // Create a table with column names
-    Table people({}, {"Name", "Age", "City"});
-
-    // Add rows of data
-    people.addRow({"Alice", 25, "New York"});
-    people.addRow({"Bob", 30, "Los Angeles"});
-
-    // Access and print data
-    Serial.println(people.row(1)["City"]);  // Output: Los Angeles
-}
-
-void loop() {}
-```
-
----
-
-## 🔄 How It Works  
-
-1. **Table Creation**  
-   - Define column names and structure.  
-   - Add rows dynamically.  
-
-2. **Data Access**  
-   - Query rows by index or by column name.  
-   - Retrieve columns as vectors for easy data manipulation.  
-
-3. **Transformation Functions**  
-   - **Spin**: Rotates a vector cyclically.  
-   - **Spread**: Expands data for structured processing.  
-   - **RepeatArray**: Creates repeated structured data.  
-
----
-
-## 📖 Supported Platforms  
-
-| Platform | Supported |
-|----------|-----------|
-| Arduino Uno | ❌ (Limited memory) |
-| ESP32 | ✅ Fully Supported |
-| ESP8266 | ✅ Fully Supported |
-| STM32 | ✅ Fully Supported |
-
----
-
-## 📖 Documentation  
-
-For a detailed breakdown of the API, visit:  
-📌 **[GitHub Repository](https://github.com/meuusuario/datahandler)**  
-
-If you have any issues or suggestions, feel free to open an **Issue** or a **Pull Request** on GitHub.  
-
-Happy Coding! 🚀📊
-```
-
+**Enjoy the new release! / Aproveite a nova versão!**
