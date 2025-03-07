@@ -10,9 +10,13 @@ A library for handling **variants, vectors, tables, and dataframes** efficiently
 ## English 🇺🇸 🏈  
 
 ### Overview  
-The **DataHandler** library provides a structured approach to handling **tables**, **vectors**, and **variants** in Arduino projects. It enables **storing, manipulating, and querying** data using a flexible and modular approach.  
+The **DataHandler** library provides a structured approach to handling **tables**, **vectors**,
+and **variants** in Arduino projects. It enables **storing, manipulating, and querying** data
+using a flexible and modular approach.  
 
-This library is designed to **simplify** working with structured data and make Arduino-based applications more powerful, especially when handling tabular data like notes, scales, chords, and sequences.  
+This library is designed to **simplify** working with structured data and make Arduino-based
+applications more powerful, especially when handling tabular data like notes, scales,
+chords, and sequences.  
 
 ### File Structure  
 
