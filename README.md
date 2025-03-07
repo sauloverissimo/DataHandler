@@ -401,6 +401,8 @@ Any doubts or need more implementation details? Check out the GitHub repository 
 --- 
 
 
+
+
 PT-BR 🟢
 # DataHandler - Manipulando dados em C++ para microcontroladores.
 Nesta seção, apresentamos uma **análise minuciosa** das principais **estruturas**, **métodos** e **funções** fornecidas pelo **DataHandler**. A ideia é descrever cada recurso, **entrada e saída**, bem como o **contexto de uso** de cada um.
