@@ -28,3 +28,16 @@ std::vector<std::string> getRotation(const std::vector<std::string>& sequencia,
 
   return resultado;
 }
+
+// Função inline que converte um Vector para std::vector<std::string>
+inline std::vector<std::string> vectorToStringVector(const Vector &vec) {
+  std::vector<std::string> result;
+  for (const auto &elem : vec.values) {
+    if (std::holds_alternative<std::string>(elem))
+      result.push_back(std::get<std::string>(elem));
+    else
+      result.push_back(""); // ou alguma conversão apropriada
+  }
+  return result;
+}
+

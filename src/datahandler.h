@@ -126,7 +126,7 @@ struct Vector {
 };
 
 
-
+std::vector<std::string> vectorToStringVector(const Vector &vec);
 
 // // ------------------- CLASSE TABLE -------------------
 
